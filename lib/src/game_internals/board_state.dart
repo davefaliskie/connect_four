@@ -17,17 +17,22 @@ class BoardState extends ChangeNotifier {
   final BoardSetting boardSetting;
   final List<Tile> playerTaken = [];
   final List<Tile> aiTaken = [];
+  List<Tile> winTiles = [];
+
+  final ChangeNotifier playerWon = ChangeNotifier();
 
   BoardState({required this.boardSetting});
 
   void clearBoard() {
     playerTaken.clear();
-    playerTaken.clear();
+    aiTaken.clear();
     notifyListeners();
   }
 
   Color tileColor(Tile tile) {
-    if (getTileOwner(tile) == TileOwner.player) {
+    if (winTiles.contains(tile)) {
+      return Colors.green;
+    } else if (getTileOwner(tile) == TileOwner.player) {
       return Colors.amber;
     } else if (getTileOwner(tile) == TileOwner.ai) {
       return Colors.redAccent;
@@ -43,6 +48,12 @@ class BoardState extends ChangeNotifier {
       return;
     }
     playerTaken.add(newTile);
+    bool didPlayerWin = checkWin(newTile);
+    if (didPlayerWin == true) {
+      playerWon.notifyListeners();
+      notifyListeners();
+      return;
+    }
     notifyListeners();
 
     // make the AI move
@@ -91,5 +102,37 @@ class BoardState extends ChangeNotifier {
       return TileOwner.blank;
     }
   }
+
+  bool checkWin(Tile playTile) {
+    var takenTiles = (getTileOwner(playTile) == TileOwner.player) ? playerTaken : aiTaken;
+
+    List<Tile>? vertical = verticalCheck(playTile, takenTiles);
+    if (vertical != null) {
+      winTiles = vertical;
+      return true;
+    }
+    return false;
+  }
+
+  List<Tile>? verticalCheck(Tile playTile, List<Tile> takenTiles) {
+    List<Tile> tempWinTiles = [];
+
+    for (var row = playTile.row; row > 0; row--) {
+      Tile tile = Tile(col: playTile.col, row: row);
+      if (takenTiles.contains(tile)) {
+        tempWinTiles.add(tile);
+      } else {
+        break;
+      }
+    }
+
+    if (tempWinTiles.length >= boardSetting.winCondition()) {
+      return tempWinTiles;
+    }
+
+    return null;
+  }
+
+
 
 }

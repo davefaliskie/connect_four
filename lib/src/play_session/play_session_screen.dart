@@ -59,7 +59,9 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
           ),
         ),
         ChangeNotifierProvider(create: (context) {
-          return BoardState(boardSetting: boardSetting);
+          final boardState = BoardState(boardSetting: boardSetting);
+          boardState.playerWon.addListener(_playerWon);
+          return boardState;
         })
       ],
       child: IgnorePointer(
