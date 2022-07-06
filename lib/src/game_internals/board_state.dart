@@ -22,6 +22,7 @@ class BoardState extends ChangeNotifier {
   final ChangeNotifier playerWon = ChangeNotifier();
 
   String noticeMessage = "";
+  bool _isLocked = false;
 
   BoardState({required this.boardSetting});
 
@@ -30,6 +31,7 @@ class BoardState extends ChangeNotifier {
     aiTaken.clear();
     winTiles.clear();
     noticeMessage = "";
+    _isLocked = false;
     notifyListeners();
   }
 
@@ -45,7 +47,8 @@ class BoardState extends ChangeNotifier {
     }
   }
 
-  void makeMove(Tile tile) {
+  Future<void> makeMove(Tile tile) async {
+    assert(!_isLocked);
     Tile? newTile = evaluateMove(tile);
     if (newTile == null) {
       noticeMessage = "Move not possible, try again";
@@ -53,6 +56,8 @@ class BoardState extends ChangeNotifier {
       return;
     }
     playerTaken.add(newTile);
+    _isLocked = true;
+
     bool didPlayerWin = checkWin(newTile);
     if (didPlayerWin == true) {
       playerWon.notifyListeners();
@@ -60,6 +65,8 @@ class BoardState extends ChangeNotifier {
       return;
     }
     notifyListeners();
+
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     // make the AI move
     Tile? aiTile = makeAiMove();
@@ -76,6 +83,7 @@ class BoardState extends ChangeNotifier {
       return;
     }
 
+    _isLocked = false;
     notifyListeners();
   }
 
