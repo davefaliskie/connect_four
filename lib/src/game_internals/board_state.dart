@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:game_template/src/game_internals/board_setting.dart';
 import 'package:game_template/src/game_internals/tile.dart';
@@ -42,6 +44,15 @@ class BoardState extends ChangeNotifier {
     }
     playerTaken.add(newTile);
     notifyListeners();
+
+    // make the AI move
+    Tile? aiTile = makeAiMove();
+    if (aiTile == null) {
+      // TODO alert no move left
+      return;
+    }
+    aiTaken.add(aiTile);
+    notifyListeners();
   }
 
   Tile? evaluateMove(Tile tile) {
@@ -52,6 +63,23 @@ class BoardState extends ChangeNotifier {
       }
     }
     return null;
+  }
+
+  Tile? makeAiMove() {
+    List<Tile> available = [];
+    for (var row = 1; row < boardSetting.rows + 1; row++) {
+      for (var col = 1; col < boardSetting.cols + 1; col++) {
+        Tile tile = Tile(col: col, row: row);
+        if (getTileOwner(tile) == TileOwner.blank) {
+          available.add(tile);
+        }
+      }
+    }
+
+    if (available.isEmpty) { return null; }
+
+    Tile aiTile = evaluateMove(available[Random().nextInt(available.length)])!;
+    return aiTile;
   }
 
   TileOwner getTileOwner(Tile tile) {
