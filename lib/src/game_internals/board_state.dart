@@ -21,12 +21,15 @@ class BoardState extends ChangeNotifier {
 
   final ChangeNotifier playerWon = ChangeNotifier();
 
+  String noticeMessage = "";
+
   BoardState({required this.boardSetting});
 
   void clearBoard() {
     playerTaken.clear();
     aiTaken.clear();
     winTiles.clear();
+    noticeMessage = "";
     notifyListeners();
   }
 
@@ -45,7 +48,8 @@ class BoardState extends ChangeNotifier {
   void makeMove(Tile tile) {
     Tile? newTile = evaluateMove(tile);
     if (newTile == null) {
-      // TODO alert can't make move
+      noticeMessage = "Move not possible, try again";
+      notifyListeners();
       return;
     }
     playerTaken.add(newTile);
@@ -60,13 +64,14 @@ class BoardState extends ChangeNotifier {
     // make the AI move
     Tile? aiTile = makeAiMove();
     if (aiTile == null) {
-      // TODO alert no move left
+      noticeMessage = "No moves left, reset to play again";
+      notifyListeners();
       return;
     }
     aiTaken.add(aiTile);
     bool didAiWin = checkWin(aiTile);
     if (didAiWin == true) {
-      // TODO set message about lose
+      noticeMessage = "You lost, reset to play again";
       notifyListeners();
       return;
     }
