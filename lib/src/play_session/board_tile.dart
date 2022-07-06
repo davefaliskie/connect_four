@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_template/src/game_internals/board_state.dart';
 import 'package:game_template/src/style/palette.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class _BoardTileState extends State<BoardTile> {
 
     return InkResponse(
       onTap: () {
-        print ("Tapped ${widget.boardIndex}");
+        Provider.of<BoardState>(context, listen: false).makeMove(tile);
       },
       child: Padding(
         padding: const EdgeInsets.all(1.0),
