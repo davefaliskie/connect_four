@@ -10,6 +10,12 @@ class BoardState extends ChangeNotifier {
 
   BoardState({required this.boardSetting});
 
+  void clearBoard() {
+    playerTaken.clear();
+    playerTaken.clear();
+    notifyListeners();
+  }
+
   void makeMove(Tile tile) {
     playerTaken.add(tile);
     notifyListeners();

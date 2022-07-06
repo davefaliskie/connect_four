@@ -69,55 +69,64 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
           body: SafeArea(
             child: Stack(
               children: [
-                Builder(
-                  builder: (context) {
-                    return Center(
-                      // This is the entirety of the "game".
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkResponse(
-                                  onTap: () => GoRouter.of(context).push('/'),
-                                  child: Image.asset(
-                                    'assets/images/back.png',
-                                    semanticLabel: 'Back',
-                                  ),
+                Builder(builder: (context) {
+                  return Center(
+                    // This is the entirety of the "game".
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkResponse(
+                                onTap: () => GoRouter.of(context).push('/'),
+                                child: Image.asset(
+                                  'assets/images/back.png',
+                                  semanticLabel: 'Back',
                                 ),
-                                InkResponse(
-                                  onTap: () =>
-                                      GoRouter.of(context).push('/settings'),
-                                  child: Image.asset(
-                                    'assets/images/settings.png',
-                                    semanticLabel: 'Settings',
-                                  ),
+                              ),
+                              InkResponse(
+                                onTap: () =>
+                                    GoRouter.of(context).push('/settings'),
+                                child: Image.asset(
+                                  'assets/images/settings.png',
+                                  semanticLabel: 'Settings',
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          const Spacer(),
-                          GameBoard(boardSetting: boardSetting),
-                          const Spacer(),
-                          Consumer<BoardState>(
-                              builder: (context, boardState, child) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Player: ${boardState.playerTaken}'),
-                                Text('Ai: ${boardState.aiTaken}'),
-                              ],
-                            );
-                          }),
-                          const Spacer(),
-                        ],
-                      ),
-                    );
-                  }
-                ),
+                        ),
+                        const Spacer(),
+                        GameBoard(boardSetting: boardSetting),
+                        const Spacer(),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            context.read<BoardState>().clearBoard();
+                          },
+                          icon: Icon(
+                            Icons.settings_backup_restore_rounded,
+                            size: 24.0,
+                          ),
+                          label: Text("Reset"),
+                        ),
+                        const Spacer(),
+                        Consumer<BoardState>(
+                            builder: (context, boardState, child) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Player: ${boardState.playerTaken}'),
+                              Text('Ai: ${boardState.aiTaken}'),
+                            ],
+                          );
+                        }),
+                        const Spacer(),
+                      ],
+                    ),
+                  );
+                }),
                 SizedBox.expand(
                   child: Visibility(
                     visible: _duringCelebration,
