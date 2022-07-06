@@ -1,0 +1,27 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+linter:
+  rules:
+    # Remove or force lint rules by adding lines like the following.
+    # The lints below are disabled in order to make things smoother in early
+    # development. Consider enabling them once development is further along.
+    prefer_const_constructors: false  # Annoying in early development
+    prefer_single_quotes: false  # Annoying in early development
+
+    avoid_types_on_closure_parameters: true
+    avoid_void_async: true
+    cancel_subscriptions: true
+    close_sinks: true
+    directives_ordering: true
+    package_api_docs: true
+    package_prefixed_library_names: true
+    test_types_in_equals: true
+    throw_in_finally: true
+    unawaited_futures: true
+    unnecessary_statements: true
+    use_super_parameters: true
