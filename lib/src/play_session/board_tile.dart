@@ -30,13 +30,17 @@ class _BoardTileState extends State<BoardTile> {
         padding: const EdgeInsets.all(1.0),
         child: Container(
           color: Colors.blue,
-          child: Container(
-            margin: EdgeInsets.all(3.0),
-            decoration: BoxDecoration(
-              color: context.read<Palette>().backgroundPlaySession,
-              shape: BoxShape.circle,
-            ),
-            child: Center(child: Text(tile.toString())),
+          child: Consumer<BoardState>(
+              builder: (context, boardState, child)  {
+              return Container(
+                margin: EdgeInsets.all(3.0),
+                decoration: BoxDecoration(
+                  color: boardState.tileColor(tile),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(child: Text(tile.toString())),
+              );
+            }
           ),
         ),
       ),
