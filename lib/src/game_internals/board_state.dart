@@ -26,6 +26,7 @@ class BoardState extends ChangeNotifier {
   void clearBoard() {
     playerTaken.clear();
     aiTaken.clear();
+    winTiles.clear();
     notifyListeners();
   }
 
@@ -63,6 +64,13 @@ class BoardState extends ChangeNotifier {
       return;
     }
     aiTaken.add(aiTile);
+    bool didAiWin = checkWin(aiTile);
+    if (didAiWin == true) {
+      // TODO set message about lose
+      notifyListeners();
+      return;
+    }
+
     notifyListeners();
   }
 
