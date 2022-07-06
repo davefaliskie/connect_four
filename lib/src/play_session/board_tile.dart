@@ -3,6 +3,7 @@ import 'package:game_template/src/style/palette.dart';
 import 'package:provider/provider.dart';
 
 import '../game_internals/board_setting.dart';
+import '../game_internals/tile.dart';
 
 class BoardTile extends StatefulWidget {
   final int boardIndex;
@@ -18,6 +19,8 @@ class BoardTile extends StatefulWidget {
 class _BoardTileState extends State<BoardTile> {
   @override
   Widget build(BuildContext context) {
+    final tile = Tile.fromBoardIndex(widget.boardIndex, widget.boardSetting);
+
     return InkResponse(
       onTap: () {
         print ("Tapped ${widget.boardIndex}");
@@ -32,7 +35,7 @@ class _BoardTileState extends State<BoardTile> {
               color: context.read<Palette>().backgroundPlaySession,
               shape: BoxShape.circle,
             ),
-            child: Center(child: Text("${widget.boardIndex}")),
+            child: Center(child: Text(tile.toString())),
           ),
         ),
       ),
