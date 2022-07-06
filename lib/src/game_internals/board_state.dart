@@ -35,8 +35,23 @@ class BoardState extends ChangeNotifier {
   }
 
   void makeMove(Tile tile) {
-    playerTaken.add(tile);
+    Tile? newTile = evaluateMove(tile);
+    if (newTile == null) {
+      // TODO alert can't make move
+      return;
+    }
+    playerTaken.add(newTile);
     notifyListeners();
+  }
+
+  Tile? evaluateMove(Tile tile) {
+    for (var bRow = 1; bRow < boardSetting.rows + 1; bRow++) {
+      var evalTile = Tile(col: tile.col, row: bRow);
+      if (getTileOwner(evalTile) == TileOwner.blank) {
+        return evalTile;
+      }
+    }
+    return null;
   }
 
   TileOwner getTileOwner(Tile tile) {
