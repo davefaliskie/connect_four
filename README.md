@@ -1,6 +1,6 @@
 ## Connect Four
 
-See how to build a connect four clone using the [flutter game_template](https://github.com/flutter/samples/tree/main/game_template). 
+See how to build a connect four game using the [flutter game_template](https://github.com/flutter/samples/tree/main/game_template). 
 
 The code here is related to the YouTube video which shows how to build the connect four game 👇
 
